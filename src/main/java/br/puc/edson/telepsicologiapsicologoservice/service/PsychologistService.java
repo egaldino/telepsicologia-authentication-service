@@ -18,7 +18,7 @@ public class PsychologistService {
 
 
     public Optional<Psychologist> authenticate(String email, String password) {
-        return repository.findBySearchHash(DigestUtils.sha256Hex(email))
+        return repository.findByEmailHash(DigestUtils.sha256Hex(email))
                 .map(this::decrypt)
                 .filter(psychologist -> psychologist.getPassword().equals(password));
     }
@@ -38,7 +38,8 @@ public class PsychologistService {
     private Psychologist encrypt(Psychologist psychologist) {
         return Psychologist
                 .builder()
-                .searchHash(DigestUtils.sha256Hex(psychologist.getEmail()))
+                .emailHash(DigestUtils.sha256Hex(psychologist.getEmail()))
+                .crpHash(DigestUtils.sha256Hex(psychologist.getCrp()))
                 .crp(dataCryptoService.encrypt(psychologist.getCrp()))
                 .email(dataCryptoService.encrypt(psychologist.getEmail()))
                 .name(dataCryptoService.encrypt(psychologist.getName()))
@@ -50,7 +51,8 @@ public class PsychologistService {
 
         return Psychologist
                 .builder()
-                .searchHash(psychologist.getSearchHash())
+                .emailHash(psychologist.getEmailHash())
+                .crpHash(psychologist.getCrpHash())
                 .crp(dataCryptoService.decrypt(psychologist.getCrp()))
                 .email(dataCryptoService.decrypt(psychologist.getEmail()))
                 .name(dataCryptoService.decrypt(psychologist.getName()))

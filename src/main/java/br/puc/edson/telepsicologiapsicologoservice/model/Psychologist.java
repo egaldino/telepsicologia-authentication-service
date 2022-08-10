@@ -18,6 +18,7 @@ public class Psychologist {
     private String email;
     private String name;
     private String password;
-    private String searchHash;
+    private String emailHash;
+    private String crpHash;
 
 }
