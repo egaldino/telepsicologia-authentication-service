@@ -18,24 +18,23 @@ public class PatientService {
 
 
     public Optional<Patient> authenticate(String email, String password) {
-        return repository.findBySearchHash(DigestUtils.sha256Hex(email))
+        return repository.findByEmailHash(DigestUtils.sha256Hex(email))
                 .map(this::decrypt)
                 .filter(psychologist -> psychologist.getPassword().equals(password));
     }
     public Patient register(Patient patient) {
-        Patient encryptedRegisterCandidate = encrypt(patient);
-        if(repository.existsByCpf(encryptedRegisterCandidate.getCpf())){
+        if(repository.existsByCpfHash(DigestUtils.sha256Hex(patient.getCpf()))){
             throw new RuntimeException("Cpf já cadastrado");
         }
-
-        repository.save(encryptedRegisterCandidate);
+        repository.save( encrypt(patient));
         return patient;
     }
 
     private Patient encrypt(Patient patient) {
         return Patient
                 .builder()
-                .searchHash(DigestUtils.sha256Hex(patient.getEmail()))
+                .cpfHash(DigestUtils.sha256Hex(patient.getCpf()))
+                .emailHash(DigestUtils.sha256Hex(patient.getEmail()))
                 .cpf(dataCryptoService.encrypt(patient.getCpf()))
                 .email(dataCryptoService.encrypt(patient.getEmail()))
                 .name(dataCryptoService.encrypt(patient.getName()))
@@ -46,7 +45,8 @@ public class PatientService {
     private Patient decrypt(Patient patient) {
         return Patient
                 .builder()
-                .searchHash(patient.getSearchHash())
+                .emailHash(patient.getEmailHash())
+                .cpfHash(patient.getEmailHash())
                 .cpf(dataCryptoService.decrypt(patient.getCpf()))
                 .email(dataCryptoService.decrypt(patient.getEmail()))
                 .name(dataCryptoService.decrypt(patient.getName()))

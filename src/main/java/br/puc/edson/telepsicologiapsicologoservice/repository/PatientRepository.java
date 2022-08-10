@@ -9,8 +9,8 @@ import java.util.Optional;
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String> {
 
-    boolean existsByCpf(String cpf);
+    boolean existsByCpfHash(String cpfHash);
 
-    Optional<Patient> findBySearchHash(String searchHash);
+    Optional<Patient> findByEmailHash(String emailHash);
 
 }

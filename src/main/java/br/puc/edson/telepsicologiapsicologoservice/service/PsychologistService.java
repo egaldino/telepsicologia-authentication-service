@@ -26,12 +26,10 @@ public class PsychologistService {
 
 
     public Psychologist register(Psychologist psychologist) {
-        Psychologist encryptedRegisterCandidate = encrypt(psychologist);
-        if(repository.existsByCrp(encryptedRegisterCandidate.getCrp())){
+        if(repository.existsByCrpHash(DigestUtils.sha256Hex(psychologist.getCrp()))){
             throw new RuntimeException("Crp já cadastrado");
         }
-
-        repository.save(encryptedRegisterCandidate);
+        repository.save( encrypt(psychologist));
         return psychologist;
     }
 

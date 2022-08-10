@@ -14,9 +14,9 @@ public class Patient {
 
     @Id
     private String cpf;
+    private String cpfHash;
     private String email;
+    private String emailHash;
     private String name;
     private String password;
-    private String searchHash;
-
 }
