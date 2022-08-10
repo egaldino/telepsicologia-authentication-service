@@ -1,6 +1,5 @@
-package br.puc.edson.telepsicologiapsicologoservice.repository;
+package br.puc.edson.telepsicologiapsicologoservice.repository.psichologist;
 
-import br.puc.edson.telepsicologiapsicologoservice.model.Psychologist;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
