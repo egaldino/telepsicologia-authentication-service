@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: target/telepsicologia-psicologo-service-0.0.1-SNAPSHOT.jar   
+          path: target/telepsicologia-authentication-service-0.0.1-SNAPSHOT.jar   
   deploy:
     needs: build
     name: Deploy
@@ -40,8 +40,8 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           #aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           use_existing_version_if_available: false
-          application_name: telepsicologia-psychologist-service
-          environment_name: telepsicologia-psychologist-service-env
+          application_name: telepsicologia-auth-service
+          environment_name: telepsicologia-auth-service-env
           version_label: ${{github.SHA}}
           region: sa-east-1
-          deployment_package: telepsicologia-psicologo-service-0.0.1-SNAPSHOT.jar
+          deployment_package: telepsicologia-authentication-service-0.0.1-SNAPSHOT.jar
